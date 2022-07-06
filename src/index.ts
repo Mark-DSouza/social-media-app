@@ -1,4 +1,5 @@
-import { HelloResolver } from "./resolvers/HelloResolver";
+import { PostResolver } from "./resolvers/posts";
+import { HelloResolver } from "./resolvers/hello";
 import { DataSource } from "typeorm";
 import { Post } from "./entity/Post";
 import express from "express";
@@ -23,7 +24,7 @@ const main = async () => {
   const app = express();
   const server = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HelloResolver],
+      resolvers: [HelloResolver, PostResolver],
       validate: false,
     }),
   });
