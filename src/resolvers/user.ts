@@ -37,17 +37,45 @@ class UserResponse {
 
 @Resolver()
 export class RegisterResolver {
-  @Mutation(() => User)
+  @Mutation(() => UserResponse)
   async register(
     @Arg("options") options: UsernamePasswordInput
-  ): Promise<User> {
+  ): Promise<UserResponse> {
+    if (options.username.length <= 2) {
+      return {
+        errors: [
+          {
+            field: "username",
+            message: "username must be at least 3 characters long",
+          },
+        ],
+        user: null,
+      };
+    }
+
+    if (options.password.length <= 2) {
+      return {
+        errors: [
+          {
+            field: "password",
+            message: "password must be at least 3 characters long",
+          },
+        ],
+        user: null,
+      };
+    }
+
     const user = User.create({
       username: options.username,
       password: await argon2.hash(options.password),
     });
 
     await user.save();
-    return user;
+
+    return {
+      errors: null,
+      user,
+    };
   }
 
   @Mutation(() => UserResponse)
