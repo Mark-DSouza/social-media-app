@@ -1,5 +1,5 @@
 import { PostResolver } from "./resolvers/posts";
-import { RegisterResolver } from "./resolvers/register";
+import { RegisterResolver } from "./resolvers/user";
 import { HelloResolver } from "./resolvers/hello";
 import { DataSource } from "typeorm";
 import { Post } from "./entity/Post";
