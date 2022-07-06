@@ -1,4 +1,5 @@
 import { PostResolver } from "./resolvers/posts";
+import { RegisterResolver } from "./resolvers/register";
 import { HelloResolver } from "./resolvers/hello";
 import { DataSource } from "typeorm";
 import { Post } from "./entity/Post";
@@ -6,6 +7,7 @@ import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
 import "reflect-metadata";
+import { User } from "./entity/User";
 
 const AppDataSource = new DataSource({
   type: "postgres",
@@ -16,7 +18,7 @@ const AppDataSource = new DataSource({
   database: "social_media_app",
   synchronize: true,
   logging: true,
-  entities: [Post],
+  entities: [Post, User],
 });
 
 const main = async () => {
@@ -24,7 +26,7 @@ const main = async () => {
   const app = express();
   const server = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HelloResolver, PostResolver],
+      resolvers: [HelloResolver, PostResolver, RegisterResolver],
       validate: false,
     }),
   });
