@@ -70,7 +70,21 @@ export class RegisterResolver {
       password: await argon2.hash(options.password),
     });
 
-    await user.save();
+    try {
+      await user.save();
+    } catch (err) {
+      if (err.code === "23505") {
+        return {
+          errors: [
+            {
+              field: "username",
+              message: "username already taken",
+            },
+          ],
+          user: null,
+        };
+      }
+    }
 
     return {
       errors: null,
